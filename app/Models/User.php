@@ -43,9 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     public function subscriptions(): Relation
     {
-        return $this->belongsToMany(Website::class, 'subscriptions')->withPivot(['last_sent_post_id','id']);
+        return $this->belongsToMany(Website::class, 'subscriptions')->withPivot(['last_sent_post_id', 'id']);
     }
 }

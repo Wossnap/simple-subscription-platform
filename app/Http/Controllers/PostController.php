@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Mail\SubscriptionMail;
 use App\Models\Post;
 use App\Models\Website;
 use App\Providers\PostCreated;
-use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -35,7 +33,7 @@ class PostController extends Controller
     {
         $post = $website->posts()->create($request->validated());
 
-        if($website->subscribers->first()){
+        if ($website->subscribers->first()) {
             PostCreated::dispatch($post);
         }
 

@@ -11,12 +11,12 @@ class EmailService
 {
     public function sendSubscriptionEmail(User $user): string
     {
-        $allPosts =  collect();
+        $allPosts = collect();
 
-        foreach($user->subscriptions as $subscription){
-            if($subscription->pivot->last_sent_post_id){
+        foreach ($user->subscriptions as $subscription) {
+            if ($subscription->pivot->last_sent_post_id) {
                 $posts = $subscription->posts()->where('id', '>', $subscription->pivot->last_sent_post_id)->get();
-            }else{
+            } else {
                 $posts = $subscription->posts;
             }
 
@@ -24,18 +24,19 @@ class EmailService
 
             $latestPost = $posts->sortByDesc('id')->first();
 
-            if($latestPost){
+            if ($latestPost) {
                 Subscription::find($subscription->pivot->id)->update([
-                    'last_sent_post_id' => $latestPost->id
+                    'last_sent_post_id' => $latestPost->id,
                 ]);
             }
 
         }
 
-        if($posts->isNotEmpty()){
+        if ($posts->isNotEmpty()) {
             Mail::to($user)->send(new SubscriptionMail($posts));
+
             return 'Successful';
-        }else{
+        } else {
             return 'No posts found to send';
         }
     }

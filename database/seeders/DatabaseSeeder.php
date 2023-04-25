@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         Website::factory(20)->has(Post::factory()->count(5))->create();
 
-
         User::factory(10)->hasAttached(Website::all()->random(3), relationship: 'subscriptions')->create();
 
     }

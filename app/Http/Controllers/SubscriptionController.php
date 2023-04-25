@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSubscriptionRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Subscription;
 use App\Models\User;
@@ -31,7 +30,7 @@ class SubscriptionController extends Controller
      */
     public function store(Website $website, User $user)
     {
-        if(Subscription::where('user_id', $user->id)->where('website_id', $website->id)->exists()){
+        if (Subscription::where('user_id', $user->id)->where('website_id', $website->id)->exists()) {
             return response()->json(['message' => 'Already subscribed'], 400);
         }
 

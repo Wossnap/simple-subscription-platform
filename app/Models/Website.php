@@ -12,7 +12,7 @@ class Website extends Model
 
     protected $fillable = [
         'title',
-        'description'
+        'description',
     ];
 
     public function posts(): Relation
@@ -22,6 +22,6 @@ class Website extends Model
 
     public function subscribers(): Relation
     {
-        return $this->belongsToMany(User::class, 'subscriptions')->withPivot(['last_sent_post_id','id']);
+        return $this->belongsToMany(User::class, 'subscriptions')->withPivot(['last_sent_post_id', 'id']);
     }
 }
