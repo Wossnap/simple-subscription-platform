@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Mail\SubscriptionMail;
 use App\Models\Post;
 use App\Models\Website;
+use App\Providers\PostCreated;
 use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
@@ -34,7 +35,9 @@ class PostController extends Controller
     {
         $post = $website->posts()->create($request->validated());
 
-        Mail::bcc($website->subscribers)->send(new SubscriptionMail(Post::with('website')->where('id', $post->id)->get()));
+        if($website->subscribers->first()){
+            PostCreated::dispatch($post);
+        }
 
         return response()->json(['message' => 'Post created successfully']);
     }
